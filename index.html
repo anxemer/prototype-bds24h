@@ -1,556 +1,552 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDS24H — Sàn bất động sản công nghiệp toàn quốc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
 
-<style>
-:root{
-  --ink:#171A1C; --paper:#EEEDE7; --panel:#FFFFFF;
-  --steel:#2B4353; --steel-dk:#1D2E38; --steel-lt:#7E97A3;
-  --amber:#DE9A16; --amber-dk:#B87E10;
-  --line:#D7D4C8; --line-dk:#3E5665;
-  --ok:#3F7D55; --warn:#B8791A; --off:#8A8A82;
-  --r:10px;
-}
-*{box-sizing:border-box;}
-body{margin:0;font-family:'IBM Plex Sans',Arial,sans-serif;background:var(--paper);color:var(--ink);}
-h1,h2,h3,.disp{font-family:'Archivo',sans-serif;letter-spacing:-0.01em;}
-.mono{font-family:'IBM Plex Mono',monospace;}
-.shell{max-width:1180px;margin:0 auto;background:var(--paper);min-height:100vh;}
-
-/* top bar */
-.topbar{background:var(--steel-dk);color:#fff;padding:0 20px;}
-.brand-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);}
-.brand{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-0.02em;}
-.brand span{color:var(--amber);}
-.hotline{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#cfd9de;}
-.pagetabs{display:flex;gap:2px;overflow-x:auto;padding:8px 0;}
-.pt{white-space:nowrap;padding:7px 12px;font-size:12px;border-radius:20px;color:#c7d2d8;cursor:pointer;font-weight:500;}
-.pt.on{background:var(--amber);color:#221800;font-weight:600;}
-.pt:hover:not(.on){background:rgba(255,255,255,.08);}
-
-.screen{display:none;}
-.screen.on{display:block;}
-.wrap{padding:26px 24px 60px;}
-.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--steel-lt);margin-bottom:6px;}
-h1.pt-title{font-size:26px;margin:0 0 6px;color:var(--steel-dk);}
-.sub{color:#5b5b53;font-size:13.5px;margin:0 0 20px;}
-
-/* buttons */
-.btn{display:inline-flex;align-items:center;gap:6px;background:var(--amber);color:#221800;border:none;padding:10px 18px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;}
-.btn:hover{background:var(--amber-dk);}
-.btn.ghost{background:transparent;color:var(--steel-dk);border:1.5px solid var(--steel-dk);}
-.btn.ghost:hover{background:var(--steel-dk);color:#fff;}
-.btn.dark{background:var(--steel-dk);color:#fff;}
-.btn.sm{padding:6px 12px;font-size:12px;}
-.btn.danger{background:#fff;color:#a83a2e;border:1.5px solid #a83a2e;}
-
-/* search bar */
-.searchbar{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:10px;align-items:end;box-shadow:0 6px 18px rgba(20,25,25,.06);}
-.fld label{display:block;font-size:10.5px;color:var(--off);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;}
-.fld select,.fld input{width:100%;border:1px solid var(--line);border-radius:6px;padding:9px 10px;font-size:13px;font-family:'IBM Plex Sans',sans-serif;background:#fcfcfa;}
-
-/* grid + cards */
-.grid{display:grid;gap:16px;}
-.g3{grid-template-columns:repeat(3,1fr);}
-.g4{grid-template-columns:repeat(4,1fr);}
-.g2{grid-template-columns:repeat(2,1fr);}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
-.thumb{aspect-ratio:4/3;background:
-  linear-gradient(135deg, rgba(43,67,83,.08), rgba(43,67,83,.03)),
-  repeating-linear-gradient(0deg, transparent, transparent 13px, rgba(43,67,83,.08) 13px, rgba(43,67,83,.08) 14px),
-  repeating-linear-gradient(90deg, transparent, transparent 13px, rgba(43,67,83,.08) 13px, rgba(43,67,83,.08) 14px);
-  display:flex;align-items:center;justify-content:center;color:var(--steel-lt);font-size:11px;font-family:'IBM Plex Mono',monospace;position:relative;}
-.prod-body{padding:12px 14px 14px;}
-.prod-title{font-weight:600;font-size:13.5px;margin:0 0 4px;line-height:1.35;}
-.prod-loc{font-size:11.5px;color:#6b6b62;margin-bottom:8px;}
-.spec-tag{display:inline-flex;gap:8px;background:var(--steel-dk);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:5px 9px;border-radius:4px;position:relative;}
-.spec-tag:before{content:'';position:absolute;left:-3px;top:50%;width:6px;height:6px;background:var(--paper);border-radius:50%;transform:translateY(-50%);}
-.price{color:var(--amber-dk);font-weight:700;font-size:14px;font-family:'IBM Plex Mono',monospace;margin-top:8px;}
-
-/* sidebar filter */
-.layout{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start;}
-.filterbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;position:sticky;top:14px;}
-.filterbox h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px;color:var(--steel-lt);font-family:'IBM Plex Mono',monospace;}
-.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-.chip{border:1px solid var(--line);padding:5px 10px;border-radius:14px;font-size:11.5px;cursor:pointer;}
-.chip.on{background:var(--steel-dk);color:#fff;border-color:var(--steel-dk);}
-
-/* tables */
-table{width:100%;border-collapse:collapse;font-size:12.5px;}
-th{text-align:left;color:var(--off);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px 10px;border-bottom:2px solid var(--line-dk);font-family:'IBM Plex Mono',monospace;}
-td{padding:11px 10px;border-bottom:1px solid var(--line);}
-.badge{font-size:10.5px;padding:3px 9px;border-radius:20px;font-family:'IBM Plex Mono',monospace;}
-.badge.ok{background:#e4efe6;color:var(--ok);}
-.badge.warn{background:#fbeed7;color:var(--warn);}
-.badge.off{background:#eee;color:var(--off);}
-
-/* app shell for logged-in pages */
-.appgrid{display:grid;grid-template-columns:200px 1fr;gap:0;min-height:70vh;}
-.sidenav{background:var(--panel);border-right:1px solid var(--line);padding:18px 0;}
-.sidenav a{display:block;padding:10px 20px;font-size:12.5px;color:#4a4a42;cursor:pointer;border-left:3px solid transparent;}
-.sidenav a.on{border-color:var(--amber);background:#f7f2e6;color:var(--steel-dk);font-weight:600;}
-.appmain{padding:22px 26px;}
-
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;}
-.stat .n{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;color:var(--steel-dk);}
-.stat .l{font-size:11px;color:var(--off);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
-
-.stepper{display:flex;margin-bottom:20px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;}
-.step{flex:1;text-align:center;padding:10px 4px;font-size:11.5px;background:#fff;color:var(--off);border-right:1px solid var(--line);font-family:'IBM Plex Mono',monospace;}
-.step:last-child{border-right:none;}
-.step.on{background:var(--steel-dk);color:#fff;}
-
-.note{background:#fff;border-left:3px solid var(--amber);padding:9px 12px;font-size:11.5px;color:#5b5b53;margin-top:16px;border-radius:0 6px 6px 0;}
-a.link{color:var(--steel);text-decoration:underline;cursor:pointer;font-size:12.5px;}
-.divider{height:1px;background:var(--line);margin:22px 0;}
-.pricecard{border:1.5px solid var(--line);border-radius:var(--r);padding:20px;background:#fff;}
-.pricecard.feat{border-color:var(--amber);box-shadow:0 8px 20px rgba(222,154,22,.15);}
-.pricecard .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--amber-dk);text-transform:uppercase;}
-.pricecard .p{font-family:'Archivo',sans-serif;font-size:24px;font-weight:800;margin:8px 0;}
-.pricecard ul{padding-left:18px;font-size:12.5px;color:#4a4a42;margin:12px 0;}
-</style>
-
-<div class="shell">
-  <div class="topbar">
-    <div class="brand-row">
-      <div class="brand">BDS<span>24H</span></div>
-      <div class="hotline">HOTLINE 0901 626 248 · KHO XƯỞNG · ĐẤT CN · TOÀN QUỐC</div>
+<!-- ============ HEADER ============ -->
+<div class="topbar">
+  <div class="container">
+    <div class="hotline">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      HOTLINE 0901 626 248 · Hỗ trợ 24/7
     </div>
-    <div class="pagetabs" id="tabs"></div>
+    <div class="topbar-links">
+      <a href="moi-gioi.html">Dành cho môi giới</a>
+      <a href="#">Trợ giúp</a>
+      <a href="#">Đăng nhập / Đăng ký</a>
+    </div>
   </div>
-
-  <!-- 1 TRANG CHỦ -->
-  <div class="screen" id="home"><div class="wrap">
-    <div class="eyebrow">Trang chủ</div>
-    <h1 class="pt-title">Sàn bất động sản công nghiệp toàn quốc</h1>
-    <p class="sub">Kho xưởng, đất công nghiệp cho thuê &amp; mua bán — pháp lý rõ ràng, khảo sát trực tiếp, hỗ trợ 24/7.</p>
-    <div class="searchbar">
-      <div class="fld"><label>Từ khoá</label><input placeholder="VD: kho xưởng Bình Dương 2000m2"></div>
-      <div class="fld"><label>Danh mục</label><select><option>Kho xưởng cho thuê</option><option>Kho xưởng bán</option><option>Đất công nghiệp</option></select></div>
-      <div class="fld"><label>Tỉnh / thành</label><select><option>Tất cả</option><option>Bình Dương</option><option>Đồng Nai</option><option>Tây Ninh</option></select></div>
-      <div class="fld"><label>Diện tích</label><select><option>Mọi diện tích</option><option>500-1000m2</option><option>1000-3000m2</option></select></div>
-      <button class="btn" onclick="go('search')">Tìm kiếm</button>
-    </div>
-
-    <div class="grid g3" style="margin-top:18px">
-      <div class="stat"><div class="l">Kho xưởng đang niêm yết</div><div class="n">1.240+</div></div>
-      <div class="stat"><div class="l">Tỉnh / thành phủ sóng</div><div class="n">18</div></div>
-      <div class="stat"><div class="l">Hỗ trợ tư vấn</div><div class="n">24/7</div></div>
-    </div>
-
-    <div class="divider"></div>
-    <h2>Kho xưởng tiêu biểu</h2>
-    <div class="grid g4" style="margin-top:12px">
-      <div class="card" onclick="go('detail')" style="cursor:pointer">
-        <div class="thumb">ẢNH SP</div>
-        <div class="prod-body"><div class="prod-title">Cho thuê kho xưởng 5.000m2 — Đức Hoà</div><div class="prod-loc">Tây Ninh · Ngoài KCN</div>
-        <span class="spec-tag">5.000 m2</span><div class="price">299.390.000/th</div></div>
-      </div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer">
-        <div class="thumb">ẢNH SP</div>
-        <div class="prod-body"><div class="prod-title">Kho xưởng cho thuê KCN Sóng Thần</div><div class="prod-loc">Bình Dương · Trong KCN</div>
-        <span class="spec-tag">2.000 m2</span><div class="price">45.000.000/th</div></div>
-      </div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer">
-        <div class="thumb">ẢNH SP</div>
-        <div class="prod-body"><div class="prod-title">Bán đất công nghiệp KCN Đại Hiệp</div><div class="prod-loc">Đà Nẵng · Trong KCN</div>
-        <span class="spec-tag">8.000 m2</span><div class="price">560.000.000</div></div>
-      </div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer">
-        <div class="thumb">ẢNH SP</div>
-        <div class="prod-body"><div class="prod-title">Nhà xưởng ngoài KCN, PCCC đầy đủ</div><div class="prod-loc">Long An · Ngoài KCN</div>
-        <span class="spec-tag">1.500 m2</span><div class="price">60.000.000/th</div></div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-    <h2>Chuỗi dịch vụ cung ứng</h2>
-    <div class="grid g4" style="margin-top:12px">
-      <div class="card" style="padding:16px"><div class="mono" style="color:var(--amber-dk);font-size:12px">01</div><b style="font-size:13px">Tiếp nhận nhu cầu thuê/mua</b></div>
-      <div class="card" style="padding:16px"><div class="mono" style="color:var(--amber-dk);font-size:12px">02</div><b style="font-size:13px">Tư vấn pháp lý đầu tư</b></div>
-      <div class="card" style="padding:16px"><div class="mono" style="color:var(--amber-dk);font-size:12px">03</div><b style="font-size:13px">Ký gửi &amp; môi giới</b></div>
-      <div class="card" style="padding:16px"><div class="mono" style="color:var(--amber-dk);font-size:12px">04</div><b style="font-size:13px">Thông tin KCN, cụm CN</b></div>
-    </div>
-  </div></div>
-
-  <!-- 2 TRANG TÌM KIẾM -->
-  <div class="screen" id="search"><div class="wrap">
-    <div class="eyebrow">Trang tìm kiếm</div>
-    <h1 class="pt-title">Kết quả cho "kho xưởng Bình Dương"</h1>
-    <p class="sub">126 kết quả phù hợp</p>
-    <div class="layout">
-      <div class="filterbox">
-        <h3>Danh mục</h3>
-        <div class="chiprow"><span class="chip on">Tất cả</span><span class="chip">Cho thuê</span><span class="chip">Bán</span><span class="chip">Đất CN</span></div>
-        <h3>Khu vực</h3>
-        <div class="chiprow"><span class="chip on">Trong KCN</span><span class="chip">Ngoài KCN</span></div>
-        <h3>Diện tích</h3>
-        <div class="fld"><input placeholder="Từ - đến (m2)"></div>
-        <h3 style="margin-top:14px">Khoảng giá</h3>
-        <div class="fld"><input placeholder="Từ - đến (triệu)"></div>
-        <button class="btn dark sm" style="width:100%;margin-top:14px;justify-content:center">Áp dụng lọc</button>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-          <select style="border:1px solid var(--line);border-radius:6px;padding:7px 10px;font-size:12.5px"><option>Sắp xếp: Mới nhất</option><option>Giá tăng dần</option><option>Diện tích lớn nhất</option></select>
-        </div>
-        <div class="grid g3">
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho xưởng KCN Sóng Thần</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">2.000 m2</span><div class="price">45tr/th</div></div></div>
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Nhà xưởng VSIP II</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">3.200 m2</span><div class="price">78tr/th</div></div></div>
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho xưởng KCN Mỹ Phước</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">1.200 m2</span><div class="price">28tr/th</div></div></div>
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho lạnh KCN Đồng An</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">800 m2</span><div class="price">40tr/th</div></div></div>
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho xưởng ngoài KCN Tân Uyên</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">1.800 m2</span><div class="price">36tr/th</div></div></div>
-          <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Xưởng may KCN Bàu Bàng</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">4.500 m2</span><div class="price">95tr/th</div></div></div>
-        </div>
-        <button class="btn ghost sm" style="width:100%;margin-top:16px;justify-content:center" onclick="go('list')">Xem theo danh mục →</button>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 3 TRANG DANH SÁCH SẢN PHẨM (category page) -->
-  <div class="screen" id="list"><div class="wrap">
-    <div class="eyebrow">Trang chủ / Kho xưởng cho thuê</div>
-    <h1 class="pt-title">Kho xưởng cho thuê</h1>
-    <p class="sub">Đa dạng diện tích từ 500m² – 50.000m², hạ tầng đồng bộ, pháp lý rõ ràng.</p>
-    <div class="layout">
-      <div class="filterbox">
-        <h3>Tỉnh / thành</h3>
-        <div class="chiprow"><span class="chip on">Tất cả</span><span class="chip">Bình Dương</span><span class="chip">Đồng Nai</span><span class="chip">Tây Ninh</span><span class="chip">Long An</span></div>
-        <h3>Loại hình</h3>
-        <div class="chiprow"><span class="chip on">Trong KCN</span><span class="chip">Ngoài KCN</span></div>
-      </div>
-      <div class="grid g3">
-        <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Cho thuê kho xưởng 5.000m2 Đức Hoà</div><div class="prod-loc">Tây Ninh</div><span class="spec-tag">5.000 m2</span><div class="price">299,3tr/th</div></div></div>
-        <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Cho thuê kho xưởng 36.000m2</div><div class="prod-loc">Tây Ninh</div><span class="spec-tag">36.000 m2</span><div class="price">2,8 tỷ/th</div></div></div>
-        <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho xưởng KCN Hải Sơn</div><div class="prod-loc">Tây Ninh</div><span class="spec-tag">5.000 m2</span><div class="price">299,3tr/th</div></div></div>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 4 TRANG CHI TIẾT SẢN PHẨM -->
-  <div class="screen" id="detail"><div class="wrap">
-    <div class="eyebrow">Trang chủ / Kho xưởng cho thuê / Chi tiết</div>
-    <div class="layout" style="grid-template-columns:1fr 320px">
-      <div>
-        <div class="thumb" style="aspect-ratio:16/9;border-radius:var(--r)">ẢNH / VIDEO / 360°</div>
-        <h1 class="pt-title" style="margin-top:16px">Cho thuê kho xưởng 5.000m2 tại Đức Hoà, Tây Ninh</h1>
-        <p class="sub">Tây Ninh · Ngoài KCN · Mã tin BDS-88213</p>
-        <div class="card" style="padding:16px">
-          <h3 style="margin:0 0 10px;font-size:12px;text-transform:uppercase;color:var(--steel-lt);font-family:'IBM Plex Mono',monospace">Thông số kỹ thuật</h3>
-          <table>
-            <tr><td>Diện tích</td><td class="mono">5.000 m2</td></tr>
-            <tr><td>Chiều cao tịnh</td><td class="mono">9 m</td></tr>
-            <tr><td>Tải trọng sàn</td><td class="mono">2 tấn/m2</td></tr>
-            <tr><td>Điện</td><td class="mono">3 pha, 250 kVA</td></tr>
-            <tr><td>PCCC</td><td class="mono">Đạt chuẩn</td></tr>
-            <tr><td>Pháp lý</td><td class="mono">Sổ đỏ, thuê 30 năm</td></tr>
-          </table>
-        </div>
-        <div class="card" style="padding:16px;margin-top:14px">
-          <h3 style="margin:0 0 10px;font-size:12px;text-transform:uppercase;color:var(--steel-lt);font-family:'IBM Plex Mono',monospace">Vị trí</h3>
-          <div class="thumb" style="aspect-ratio:21/9">BẢN ĐỒ VỊ TRÍ</div>
-        </div>
-      </div>
-      <div>
-        <div class="card" style="padding:16px;position:sticky;top:70px">
-          <div class="price" style="font-size:20px">299.390.000/tháng</div>
-          <button class="btn" style="width:100%;justify-content:center;margin-top:12px">📞 Click gọi ngay</button>
-          <button class="btn ghost sm" style="width:100%;justify-content:center;margin-top:8px">+ Lưu vào giỏ so sánh</button>
-          <div class="divider"></div>
-          <div style="font-size:12.5px;color:var(--off);margin-bottom:6px">Môi giới phụ trách</div>
-          <b style="font-size:13.5px">Nguyễn Văn A</b>
-          <div class="sub" style="margin:2px 0 8px">Khu vực Tây Ninh, Long An</div>
-          <a class="link" onclick="go('shop')">Xem gian hàng →</a>
-        </div>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 5 TRANG ĐĂNG TIN -->
-  <div class="screen" id="post"><div class="wrap">
-    <div class="eyebrow">Trang đăng tin</div>
-    <h1 class="pt-title">Đăng tin bất động sản công nghiệp</h1>
-    <div class="stepper">
-      <div class="step on">1. Loại SP</div><div class="step">2. Thông tin</div><div class="step">3. Gói dịch vụ</div><div class="step">4. Thanh toán</div>
-    </div>
-    <div class="grid g3">
-      <div class="card" style="padding:18px;cursor:pointer" onclick="go('post2')"><b>Kho xưởng cho thuê</b><div class="sub">Trong / ngoài KCN</div></div>
-      <div class="card" style="padding:18px;cursor:pointer" onclick="go('post2')"><b>Kho xưởng bán</b><div class="sub">Trong / ngoài KCN</div></div>
-      <div class="card" style="padding:18px;cursor:pointer" onclick="go('post2')"><b>Đất công nghiệp</b><div class="sub">Trong / ngoài KCN</div></div>
-    </div>
-  </div></div>
-
-  <div class="screen" id="post2"><div class="wrap">
-    <div class="eyebrow">Trang đăng tin</div>
-    <div class="stepper">
-      <div class="step">1. Loại SP</div><div class="step on">2. Thông tin</div><div class="step">3. Gói dịch vụ</div><div class="step">4. Thanh toán</div>
-    </div>
-    <div class="grid g2">
-      <div class="fld"><label>Tiêu đề tin</label><input placeholder="Cho thuê kho xưởng..."></div>
-      <div class="fld"><label>Diện tích (m2)</label><input></div>
-      <div class="fld"><label>Giá thuê / tháng</label><input></div>
-      <div class="fld"><label>Trong / ngoài KCN</label><select><option>Ngoài KCN</option><option>Trong KCN</option></select></div>
-      <div class="fld"><label>Chiều cao tịnh (m)</label><input></div>
-      <div class="fld"><label>Tải trọng sàn (tấn/m2)</label><input></div>
-    </div>
-    <div class="fld" style="margin-top:6px"><label>Ảnh / video</label><div class="thumb" style="aspect-ratio:5/1">KÉO THẢ FILE VÀO ĐÂY</div></div>
-    <div style="margin-top:16px;display:flex;gap:10px">
-      <button class="btn ghost">Lưu nháp</button>
-      <button class="btn" onclick="go('post3')">Tiếp tục →</button>
-    </div>
-  </div></div>
-
-  <div class="screen" id="post3"><div class="wrap">
-    <div class="eyebrow">Trang gói dịch vụ</div>
-    <div class="stepper">
-      <div class="step">1. Loại SP</div><div class="step">2. Thông tin</div><div class="step on">3. Gói dịch vụ</div><div class="step">4. Thanh toán</div>
-    </div>
-    <div class="grid g3">
-      <div class="pricecard"><div class="tag">Cơ bản</div><div class="p">Miễn phí</div><ul><li>7 ngày hiển thị</li><li>Hiển thị trong kết quả tìm kiếm</li></ul><button class="btn ghost sm" style="width:100%;justify-content:center" onclick="go('checkout')">Chọn gói</button></div>
-      <div class="pricecard feat"><div class="tag">Nổi bật</div><div class="p">99.000đ</div><ul><li>15 ngày hiển thị</li><li>Đẩy top 3 lần/ngày</li><li>Gắn nhãn "Nổi bật"</li></ul><button class="btn sm" style="width:100%;justify-content:center" onclick="go('checkout')">Chọn gói</button></div>
-      <div class="pricecard"><div class="tag">VIP</div><div class="p">299.000đ</div><ul><li>30 ngày hiển thị</li><li>Ưu tiên tìm kiếm</li><li>Hiện trong gian hàng</li></ul><button class="btn ghost sm" style="width:100%;justify-content:center" onclick="go('checkout')">Chọn gói</button></div>
-    </div>
-  </div></div>
-
-  <!-- TRANG THANH TOÁN -->
-  <div class="screen" id="checkout"><div class="wrap">
-    <div class="eyebrow">Trang thanh toán</div>
-    <div class="stepper">
-      <div class="step">1. Loại SP</div><div class="step">2. Thông tin</div><div class="step">3. Gói dịch vụ</div><div class="step on">4. Thanh toán</div>
-    </div>
-    <div class="layout" style="grid-template-columns:1fr 320px">
-      <div>
-        <h3 style="font-size:13px">Phương thức thanh toán</h3>
-        <div class="grid g2">
-          <div class="card" style="padding:14px;cursor:pointer;border-color:var(--amber)"><b style="font-size:13px">Ví BDS24H</b><div class="sub">Số dư: 450.000đ</div></div>
-          <div class="card" style="padding:14px;cursor:pointer"><b style="font-size:13px">VNPay</b><div class="sub">Thẻ ATM / QR</div></div>
-          <div class="card" style="padding:14px;cursor:pointer"><b style="font-size:13px">Momo</b><div class="sub">Ví điện tử</div></div>
-          <div class="card" style="padding:14px;cursor:pointer"><b style="font-size:13px">ZaloPay</b><div class="sub">Ví điện tử</div></div>
-        </div>
-        <div class="fld" style="margin-top:14px"><label>Mã giới thiệu (nếu có)</label><input placeholder="Nhập mã ưu đãi"></div>
-      </div>
-      <div class="card" style="padding:16px">
-        <h3 style="margin:0 0 10px;font-size:12px;text-transform:uppercase;color:var(--steel-lt);font-family:'IBM Plex Mono',monospace">Đơn hàng</h3>
-        <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px"><span>Gói Nổi bật</span><span class="mono">99.000đ</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--ok);margin-bottom:6px"><span>Ưu đãi giới thiệu</span><span class="mono">-0đ</span></div>
-        <div class="divider"></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700"><span>Tổng</span><span class="mono">99.000đ</span></div>
-        <button class="btn" style="width:100%;justify-content:center;margin-top:14px" onclick="go('post4')">Xác nhận thanh toán</button>
-      </div>
-    </div>
-  </div></div>
-
-  <div class="screen" id="post4"><div class="wrap" style="text-align:center;padding-top:60px">
-    <div style="font-size:40px">✅</div>
-    <h1 class="pt-title">Đăng tin thành công</h1>
-    <p class="sub">Tin của bạn đang chờ admin duyệt, thường trong vòng 30 phút.</p>
-    <button class="btn dark" onclick="go('manage')">Xem trang quản lý tin →</button>
-  </div></div>
-
-  <!-- 6 TRANG QUẢN LÝ TIN -->
-  <div class="screen" id="manage"><div class="wrap">
-    <div class="appgrid">
-      <div class="sidenav">
-        <a class="on">Quản lý tin</a><a onclick="go('stats')">Thống kê</a><a onclick="go('wallet')">Quản lý chi tiêu</a><a onclick="go('account')">Tài khoản</a>
-      </div>
-      <div class="appmain">
-        <div class="eyebrow">Trang quản lý tin</div>
-        <h1 class="pt-title">Tin đăng của tôi</h1>
-        <div class="chiprow"><span class="chip on">Tất cả (12)</span><span class="chip">Đang hiển thị (8)</span><span class="chip">Chờ duyệt (2)</span><span class="chip">Hết hạn (2)</span></div>
-        <table>
-          <tr><th>Tin đăng</th><th>Gói</th><th>Trạng thái</th><th>Ngày đăng</th><th></th></tr>
-          <tr><td>Kho xưởng 2.000m2 — Sóng Thần</td><td>Nổi bật</td><td><span class="badge ok">Đang hiển thị</span></td><td class="mono">12/07/2026</td><td><button class="btn ghost sm">Sửa</button></td></tr>
-          <tr><td>Đất công nghiệp 5.000m2</td><td>Cơ bản</td><td><span class="badge warn">Chờ duyệt</span></td><td class="mono">30/07/2026</td><td><button class="btn ghost sm">Sửa</button></td></tr>
-          <tr><td>Nhà xưởng Long An</td><td>VIP</td><td><span class="badge off">Hết hạn</span></td><td class="mono">01/06/2026</td><td><button class="btn ghost sm">Gia hạn</button></td></tr>
-        </table>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 7 TRANG THỐNG KÊ -->
-  <div class="screen" id="stats"><div class="wrap">
-    <div class="appgrid">
-      <div class="sidenav">
-        <a onclick="go('manage')">Quản lý tin</a><a class="on">Thống kê</a><a onclick="go('wallet')">Quản lý chi tiêu</a><a onclick="go('account')">Tài khoản</a>
-      </div>
-      <div class="appmain">
-        <div class="eyebrow">Trang thống kê</div>
-        <h1 class="pt-title">Hiệu quả tin đăng</h1>
-        <div class="grid g3" style="margin-bottom:18px">
-          <div class="stat"><div class="l">Lượt xem (30 ngày)</div><div class="n">3.482</div></div>
-          <div class="stat"><div class="l">Click gọi</div><div class="n">126</div></div>
-          <div class="stat"><div class="l">Tỷ lệ chuyển đổi</div><div class="n">3,6%</div></div>
-        </div>
-        <div class="card" style="padding:16px">
-          <h3 style="margin:0 0 12px;font-size:12px;text-transform:uppercase;color:var(--steel-lt);font-family:'IBM Plex Mono',monospace">Lượt xem theo ngày</h3>
-          <svg viewBox="0 0 400 100" style="width:100%;height:90px">
-            <polyline points="0,80 40,70 80,75 120,50 160,55 200,30 240,40 280,20 320,35 360,15 400,25" fill="none" stroke="#DE9A16" stroke-width="2.5"/>
-          </svg>
-        </div>
-        <table style="margin-top:16px">
-          <tr><th>Tin đăng</th><th>View</th><th>Click</th><th>CTR</th></tr>
-          <tr><td>Kho xưởng 2.000m2 — Sóng Thần</td><td class="mono">820</td><td class="mono">34</td><td class="mono">4,1%</td></tr>
-          <tr><td>Nhà xưởng Long An</td><td class="mono">540</td><td class="mono">18</td><td class="mono">3,3%</td></tr>
-        </table>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 8 TRANG QUẢN LÝ CHI TIÊU -->
-  <div class="screen" id="wallet"><div class="wrap">
-    <div class="appgrid">
-      <div class="sidenav">
-        <a onclick="go('manage')">Quản lý tin</a><a onclick="go('stats')">Thống kê</a><a class="on">Quản lý chi tiêu</a><a onclick="go('account')">Tài khoản</a>
-      </div>
-      <div class="appmain">
-        <div class="eyebrow">Trang quản lý chi tiêu</div>
-        <h1 class="pt-title">Ví BDS24H</h1>
-        <div class="grid g3" style="margin-bottom:18px">
-          <div class="stat"><div class="l">Số dư hiện tại</div><div class="n">450.000đ</div></div>
-          <div class="stat"><div class="l">Đã chi tháng này</div><div class="n">1.240.000đ</div></div>
-          <div class="stat"><div class="l">Đã nạp tháng này</div><div class="n">2.000.000đ</div></div>
-        </div>
-        <button class="btn" onclick="go('checkout')">+ Nạp tiền vào ví</button>
-        <h3 style="margin-top:20px;font-size:13px">Lịch sử giao dịch</h3>
-        <table>
-          <tr><th>Ngày</th><th>Nội dung</th><th>Loại</th><th>Số tiền</th></tr>
-          <tr><td class="mono">30/07/2026</td><td>Mua gói Nổi bật</td><td><span class="badge off">Trừ</span></td><td class="mono">-99.000đ</td></tr>
-          <tr><td class="mono">28/07/2026</td><td>Nạp qua VNPay</td><td><span class="badge ok">Nạp</span></td><td class="mono">+2.000.000đ</td></tr>
-          <tr><td class="mono">15/07/2026</td><td>Mua gói VIP</td><td><span class="badge off">Trừ</span></td><td class="mono">-299.000đ</td></tr>
-        </table>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 9 TRANG MÔI GIỚI -->
-  <div class="screen" id="brokers"><div class="wrap">
-    <div class="eyebrow">Trang môi giới</div>
-    <h1 class="pt-title">Mạng lưới môi giới BDS24H</h1>
-    <p class="sub">126 môi giới đang hoạt động trên toàn quốc</p>
-    <div class="grid g4">
-      <div class="card" style="padding:14px;cursor:pointer" onclick="go('shop')"><div class="thumb" style="aspect-ratio:1/1;border-radius:50%;max-width:70px;margin:0 auto 10px">Ảnh</div><b style="font-size:13px;display:block;text-align:center">Nguyễn Văn A</b><div class="sub" style="text-align:center">Bình Dương, Đồng Nai</div></div>
-      <div class="card" style="padding:14px;cursor:pointer" onclick="go('shop')"><div class="thumb" style="aspect-ratio:1/1;border-radius:50%;max-width:70px;margin:0 auto 10px">Ảnh</div><b style="font-size:13px;display:block;text-align:center">Trần Thị B</b><div class="sub" style="text-align:center">Tây Ninh, Long An</div></div>
-      <div class="card" style="padding:14px;cursor:pointer" onclick="go('shop')"><div class="thumb" style="aspect-ratio:1/1;border-radius:50%;max-width:70px;margin:0 auto 10px">Ảnh</div><b style="font-size:13px;display:block;text-align:center">Công ty C</b><div class="sub" style="text-align:center">Đà Nẵng</div></div>
-      <div class="card" style="padding:14px;cursor:pointer" onclick="go('shop')"><div class="thumb" style="aspect-ratio:1/1;border-radius:50%;max-width:70px;margin:0 auto 10px">Ảnh</div><b style="font-size:13px;display:block;text-align:center">Lê Văn D</b><div class="sub" style="text-align:center">TP.HCM</div></div>
-    </div>
-  </div></div>
-
-  <!-- 10 TRANG GIAN HÀNG -->
-  <div class="screen" id="shop"><div class="wrap">
-    <div class="thumb" style="aspect-ratio:6/1;border-radius:var(--r)">BANNER GIAN HÀNG</div>
-    <div style="display:flex;gap:16px;align-items:center;margin-top:-30px;padding-left:20px">
-      <div class="thumb" style="width:70px;height:70px;border-radius:50%;border:3px solid #fff">Ảnh</div>
-      <div style="padding-top:30px">
-        <h1 class="pt-title" style="margin-bottom:2px">Gian hàng: Nguyễn Văn A</h1>
-        <span class="badge ok">Hội viên</span> <span class="sub" style="display:inline">Bình Dương, Đồng Nai</span>
-      </div>
-    </div>
-    <div class="chiprow" style="margin-top:16px"><span class="chip on">Tất cả (24)</span><span class="chip">Cho thuê (18)</span><span class="chip">Bán (6)</span></div>
-    <div class="grid g4">
-      <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho xưởng 1.500m2</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">1.500 m2</span></div></div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Đất KCN 3.000m2</div><div class="prod-loc">Đồng Nai</div><span class="spec-tag">3.000 m2</span></div></div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Kho lạnh 800m2</div><div class="prod-loc">Bình Dương</div><span class="spec-tag">800 m2</span></div></div>
-      <div class="card" onclick="go('detail')" style="cursor:pointer"><div class="thumb">ẢNH SP</div><div class="prod-body"><div class="prod-title">Xưởng may 2.200m2</div><div class="prod-loc">Đồng Nai</div><span class="spec-tag">2.200 m2</span></div></div>
-    </div>
-  </div></div>
-
-  <!-- 11 TRANG GÓI DỊCH VỤ -->
-  <div class="screen" id="packages"><div class="wrap">
-    <div class="eyebrow">Trang gói dịch vụ</div>
-    <h1 class="pt-title">Bảng giá gói tin đăng</h1>
-    <p class="sub">Chọn gói phù hợp để tăng hiển thị và tiếp cận khách hàng</p>
-    <div class="grid g3">
-      <div class="pricecard"><div class="tag">Cơ bản</div><div class="p">Miễn phí</div><ul><li>7 ngày hiển thị</li><li>1 tin/tháng</li><li>Không ưu tiên tìm kiếm</li></ul><button class="btn ghost sm" style="width:100%;justify-content:center">Chọn gói</button></div>
-      <div class="pricecard feat"><div class="tag">Phổ biến nhất · Nổi bật</div><div class="p">99.000đ</div><ul><li>15 ngày hiển thị</li><li>Đẩy top 3 lần/ngày</li><li>Nhãn "Nổi bật"</li><li>Không giới hạn tin</li></ul><button class="btn sm" style="width:100%;justify-content:center">Chọn gói</button></div>
-      <div class="pricecard"><div class="tag">VIP</div><div class="p">299.000đ</div><ul><li>30 ngày hiển thị</li><li>Ưu tiên tìm kiếm cao nhất</li><li>Hiện trong gian hàng riêng</li><li>Báo cáo thống kê nâng cao</li></ul><button class="btn ghost sm" style="width:100%;justify-content:center">Chọn gói</button></div>
-    </div>
-  </div></div>
-
-  <!-- 13 TRANG TIN TỨC -->
-  <div class="screen" id="news"><div class="wrap">
-    <div class="eyebrow">Trang tin tức</div>
-    <h1 class="pt-title">Tin tức &amp; xu hướng thị trường</h1>
-    <div class="grid g3">
-      <div class="card"><div class="thumb">ẢNH BÀI VIẾT</div><div class="prod-body"><div class="sub mono">31/07/2026</div><div class="prod-title">Nhà xưởng cho thuê KCN Quảng Trị — thực trạng &amp; giải pháp</div></div></div>
-      <div class="card"><div class="thumb">ẢNH BÀI VIẾT</div><div class="prod-body"><div class="sub mono">30/07/2026</div><div class="prod-title">Thuê kho xưởng Quảng Trị — cần lưu ý gì?</div></div></div>
-      <div class="card"><div class="thumb">ẢNH BÀI VIẾT</div><div class="prod-body"><div class="sub mono">28/07/2026</div><div class="prod-title">Mua bán nhà xưởng Quảng Trị — kênh nào uy tín?</div></div></div>
-    </div>
-  </div></div>
-
-  <!-- 14 TRANG TÀI KHOẢN -->
-  <div class="screen" id="account"><div class="wrap">
-    <div class="appgrid">
-      <div class="sidenav">
-        <a onclick="go('manage')">Quản lý tin</a><a onclick="go('stats')">Thống kê</a><a onclick="go('wallet')">Quản lý chi tiêu</a><a class="on">Tài khoản</a>
-      </div>
-      <div class="appmain">
-        <div class="eyebrow">Trang tài khoản</div>
-        <h1 class="pt-title">Thông tin tài khoản</h1>
-        <div class="chiprow"><span class="chip on">Thông tin cá nhân</span><span class="chip">Bảo mật</span><span class="chip">Thông báo</span></div>
-        <div class="grid g2" style="max-width:600px">
-          <div class="fld"><label>Họ và tên</label><input value="Nguyễn Văn A"></div>
-          <div class="fld"><label>Số điện thoại</label><input value="0901 xxx 248"></div>
-          <div class="fld"><label>Email</label><input value="a.nguyen@email.com"></div>
-          <div class="fld"><label>Khu vực hoạt động</label><input value="Bình Dương, Đồng Nai"></div>
-        </div>
-        <button class="btn dark" style="margin-top:14px">Lưu thay đổi</button>
-      </div>
-    </div>
-  </div></div>
-
-  <!-- 15 TRANG QUẢN TRỊ -->
-  <div class="screen" id="admin"><div class="wrap">
-    <div class="appgrid">
-      <div class="sidenav">
-        <a class="on">Duyệt tin</a><a>Người dùng</a><a>Gói dịch vụ</a><a>Báo cáo vi phạm</a><a>Cấu hình hệ thống</a>
-      </div>
-      <div class="appmain">
-        <div class="eyebrow">Trang quản trị</div>
-        <h1 class="pt-title">Duyệt tin đăng</h1>
-        <div class="chiprow"><span class="chip on">Chờ duyệt (14)</span><span class="chip">Đã duyệt</span><span class="chip">Đã từ chối</span></div>
-        <table>
-          <tr><th>Tin đăng</th><th>Chủ tin</th><th>Loại SP</th><th>Trạng thái</th><th></th></tr>
-          <tr><td>Kho xưởng 2.000m2 — Sóng Thần</td><td>Nguyễn Văn A</td><td>Kho xưởng</td><td><span class="badge warn">Chờ duyệt</span></td><td><button class="btn sm">Duyệt</button> <button class="btn danger sm">Từ chối</button></td></tr>
-          <tr><td>Đất công nghiệp 5.000m2</td><td>Công ty B</td><td>Đất CN</td><td><span class="badge warn">Chờ duyệt</span></td><td><button class="btn sm">Duyệt</button> <button class="btn danger sm">Từ chối</button></td></tr>
-          <tr><td>Nhà xưởng Long An</td><td>Trần Thị C</td><td>Kho xưởng</td><td><span class="badge ok">Đã duyệt</span></td><td class="sub">—</td></tr>
-        </table>
-        <div class="note">Ghi chú: dữ liệu minh hoạ — dùng để chốt luồng thao tác của admin trước khi code thật.</div>
-      </div>
-    </div>
-  </div></div>
-
 </div>
 
-<script>
-const pages = [
-  {id:'home',label:'Trang chủ'},
-  {id:'search',label:'Tìm kiếm'},
-  {id:'list',label:'Danh sách SP'},
-  {id:'detail',label:'Chi tiết SP'},
-  {id:'post',label:'Đăng tin'},
-  {id:'manage',label:'Quản lý tin'},
-  {id:'stats',label:'Thống kê'},
-  {id:'wallet',label:'Quản lý chi tiêu'},
-  {id:'brokers',label:'Môi giới'},
-  {id:'shop',label:'Gian hàng'},
-  {id:'packages',label:'Gói dịch vụ'},
-  {id:'checkout',label:'Thanh toán'},
-  {id:'news',label:'Tin tức'},
-  {id:'account',label:'Tài khoản'},
-  {id:'admin',label:'Quản trị'},
-];
-const tabsEl = document.getElementById('tabs');
-pages.forEach(p=>{
-  const d=document.createElement('div');
-  d.className='pt'; d.textContent=p.label; d.id='tab-'+p.id; d.onclick=()=>go(p.id);
-  tabsEl.appendChild(d);
-});
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.pt').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id).classList.add('on');
-  const t=document.getElementById('tab-'+id);
-  if(t) t.classList.add('on');
-  window.scrollTo(0,0);
-}
-go('home');
-</script>
+<header class="site-header">
+  <div class="header-row container">
+    <a href="index.html" class="brand"><span class="mark">24H</span>BDS<span>24H</span></a>
+
+    <button class="hamburger" aria-label="Menu">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+
+    <ul class="main-nav">
+      <li>
+        <button class="nav-trigger">Danh mục
+          <svg class="ic chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="megamenu">
+          <div class="megamenu-col">
+            <h4><svg class="ic" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>Kho xưởng cho thuê</h4>
+            <a href="danh-sach.html">Trong khu công nghiệp <span class="count">612</span></a>
+            <a href="danh-sach.html">Ngoài khu công nghiệp <span class="count">348</span></a>
+          </div>
+          <div class="megamenu-col">
+            <h4><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21v-6h6v6"/></svg>Kho xưởng bán</h4>
+            <a href="danh-sach.html">Trong khu công nghiệp <span class="count">204</span></a>
+            <a href="danh-sach.html">Ngoài khu công nghiệp <span class="count">96</span></a>
+          </div>
+          <div class="megamenu-col">
+            <h4><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>Đất công nghiệp</h4>
+            <a href="danh-sach.html">Đất trong KCN <span class="count">150</span></a>
+            <a href="danh-sach.html">Đất ngoài KCN <span class="count">88</span></a>
+            <a href="khu-cong-nghiep.html">Khu công nghiệp <span class="count">42</span></a>
+          </div>
+          <div class="megamenu-promo">
+            <div class="mp-card">
+              <svg class="wm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg>
+              <h5>Đăng tin miễn phí</h5>
+              <p>Tiếp cận hàng nghìn nhà đầu tư mỗi ngày.</p>
+              <a href="dang-tin.html" class="btn sm">+ Đăng tin ngay</a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="moi-gioi.html">Môi giới</a></li>
+      <li><a href="tin-tuc.html">Tin tức</a></li>
+      <li><a href="goi-tin.html">Bảng giá</a></li>
+    </ul>
+
+    <div class="header-actions">
+      <button class="header-search-btn" aria-label="Tìm kiếm">
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
+      <div class="divider-v"></div>
+      <a href="#" class="btn ghost sm">Đăng nhập</a>
+      <a href="dang-tin.html" class="btn sm">+ Đăng tin</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV DRAWER ============ -->
+<div class="mobile-nav">
+  <div class="mn-head">
+    <a href="index.html" class="brand"><span class="mark">24H</span>BDS<span>24H</span></a>
+    <button class="mn-close" aria-label="Đóng menu"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="mn-search">
+    <svg class="ic ic-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="Tìm kho xưởng, đất công nghiệp...">
+  </div>
+  <nav class="mn-links">
+    <div class="mn-group-title">Danh mục</div>
+    <a href="danh-sach.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>Kho xưởng cho thuê</a>
+    <a href="danh-sach.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21v-6h6v6"/></svg>Kho xưởng bán</a>
+    <a href="danh-sach.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg>Đất công nghiệp</a>
+    <a href="khu-cong-nghiep.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg>Khu công nghiệp</a>
+    <div class="mn-group-title">Khác</div>
+    <a href="moi-gioi.html"><svg class="ic sm" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 12 0v1"/><circle cx="17" cy="8" r="2.5"/><path d="M15.5 21v-1a5 5 0 0 1 6-4.9"/></svg>Môi giới</a>
+    <a href="tin-tuc.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>Tin tức</a>
+    <a href="goi-tin.html"><svg class="ic sm" viewBox="0 0 24 24"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6M2 7h20v5H2zM12 7v13"/></svg>Bảng giá gói tin</a>
+  </nav>
+  <div class="mn-foot">
+    <div class="mn-actions">
+      <a href="#" class="btn ghost block">Đăng nhập</a>
+      <a href="dang-tin.html" class="btn block">+ Đăng tin</a>
+    </div>
+    <div class="mn-hotline"><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>HOTLINE 0901 626 248</div>
+  </div>
+</div>
+<div class="nav-overlay"></div>
+
+<!-- ============ CATEGORY RAIL (kiểu sàn TMĐT) ============ -->
+<nav class="category-rail" aria-label="Danh mục nhanh">
+  <div class="crail-list">
+    <a class="crail-card" href="danh-sach.html">
+      <span class="cc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg></span>
+      <span class="cc-text"><b>Kho xưởng cho thuê</b><small>960 tin đăng</small></span>
+      <svg class="cc-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="crail-card" href="danh-sach.html">
+      <span class="cc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></span>
+      <span class="cc-text"><b>Kho xưởng bán</b><small>300 tin đăng</small></span>
+      <svg class="cc-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="crail-card" href="danh-sach.html">
+      <span class="cc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 3v18"/></svg></span>
+      <span class="cc-text"><b>Đất công nghiệp</b><small>238 tin đăng</small></span>
+      <svg class="cc-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="crail-card" href="khu-cong-nghiep.html">
+      <span class="cc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg></span>
+      <span class="cc-text"><b>Khu công nghiệp</b><small>68 khu / cụm</small></span>
+      <svg class="cc-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+    <a class="crail-card" href="danh-sach.html">
+      <span class="cc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span>
+      <span class="cc-text"><b>Kho lạnh</b><small>86 tin đăng</small></span>
+      <svg class="cc-arrow" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-inner container">
+    <div class="hero-copy">
+      <span class="hero-eyebrow"><span class="dot"></span> Đang cập nhật 1.240+ tin mới trong tuần</span>
+      <h1>Sàn bất động sản <em>công nghiệp</em> toàn quốc</h1>
+      <p class="lede">Kho xưởng, đất công nghiệp cho thuê &amp; mua bán — pháp lý rõ ràng, khảo sát trực tiếp, hỗ trợ 24/7 từ mạng lưới môi giới toàn quốc.</p>
+      <div class="hero-cta">
+        <a href="danh-sach.html" class="btn">
+          <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          Khám phá kho xưởng
+        </a>
+        <a href="dang-tin.html" class="btn on-dark">+ Đăng tin miễn phí</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <span class="measure-top">KHU ĐẤT — 18.400 m²</span>
+      <div class="frame"></div>
+      <div class="hero-visual-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/><path d="M3 21h18"/><path d="M7 12h2M15 12h2"/></svg>
+      </div>
+      <span class="tag t1"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="m9 12 2 2 4-4"/></svg>Pháp lý xác minh</span>
+      <span class="tag t2"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Cập nhật 24/7</span>
+      <span class="tag t3"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>18 tỉnh/thành</span>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="container">
+      <div class="hstat"><div class="n"><span>1.240</span>+</div><div class="l">Kho xưởng &amp; SP đang niêm yết</div></div>
+      <div class="hstat"><div class="n">18</div><div class="l">Tỉnh / thành phủ sóng</div></div>
+      <div class="hstat"><div class="n"><span>500</span>+</div><div class="l">Môi giới hoạt động</div></div>
+      <div class="hstat"><div class="n">24/7</div><div class="l">Hỗ trợ tư vấn trực tuyến</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROMO BANNER (kiểu sàn TMĐT) ============ -->
+<section class="section tight">
+  <div class="container">
+    <div class="promo-grid">
+      <div class="promo-card">
+        <svg class="promo-ic" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg>
+        <span class="tag">Ưu đãi tin đăng</span>
+        <h3>Gói Nổi bật giảm 50% cho tin đầu tiên</h3>
+        <p>Áp dụng cho chủ tài sản &amp; môi giới đăng tin lần đầu trong tháng 8.</p>
+        <a href="#packages" class="btn on-dark sm">Xem ưu đãi</a>
+      </div>
+      <div class="promo-stack">
+        <div class="promo-card orange">
+          <svg class="promo-ic" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>
+          <span class="tag">Mới mở bán</span>
+          <h3 style="font-size:15px">KCN Hải Sơn — Tây Ninh</h3>
+        </div>
+        <div class="promo-card">
+          <svg class="promo-ic" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 12 0v1"/><circle cx="17" cy="8" r="2.5"/><path d="M15.5 21v-1a5 5 0 0 1 6-4.9"/></svg>
+          <span class="tag">Mạng lưới</span>
+          <h3 style="font-size:15px">Tìm môi giới theo khu vực</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DANH MỤC NỔI BẬT ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Danh mục</div>
+        <h2>Bạn đang tìm gì?</h2>
+      </div>
+      <a href="danh-sach.html" class="link">Xem tất cả danh mục →</a>
+    </div>
+    <div class="grid g4">
+      <a href="danh-sach.html" class="cat-tile">
+        <div class="icwrap"><svg class="ic lg" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg></div>
+        <h3>Kho xưởng cho thuê</h3>
+        <p>Trong &amp; ngoài KCN, diện tích 500 – 50.000 m².</p>
+        <div class="count">960 tin <svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="danh-sach.html" class="cat-tile">
+        <div class="icwrap"><svg class="ic lg" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21v-6h6v6"/></svg></div>
+        <h3>Kho xưởng bán</h3>
+        <p>Sở hữu lâu dài, pháp lý sổ đỏ rõ ràng.</p>
+        <div class="count">300 tin <svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="danh-sach.html" class="cat-tile">
+        <div class="icwrap"><svg class="ic lg" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></div>
+        <h3>Đất công nghiệp</h3>
+        <p>Trong &amp; ngoài khu công nghiệp, đa dạng mục đích sử dụng.</p>
+        <div class="count">238 tin <svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <a href="danh-sach.html" class="cat-tile">
+        <div class="icwrap"><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg></div>
+        <h3>Khu công nghiệp</h3>
+        <p>Thông tin quy hoạch, hạ tầng, giá thuê theo từng KCN.</p>
+        <div class="count">42 KCN <svg class="ic sm" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KHO XƯỞNG TIÊU BIỂU ============ -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Tin nổi bật</div>
+        <h2>Kho xưởng &amp; đất công nghiệp tiêu biểu</h2>
+        <p>Chọn lọc từ các tin đăng xác thực, cập nhật trong tuần.</p>
+      </div>
+      <a href="danh-sach.html" class="link">Xem tất cả →</a>
+    </div>
+
+    <div class="grid g4">
+      <a href="chi-tiet.html" class="pcard">
+        <div class="pcard-media">
+          <span class="ribbon">Nổi bật</span>
+          <span class="fav"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6z"/></svg></span>
+          <svg class="wm" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>
+          <span class="kcn-tag">Ngoài KCN</span>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Cho thuê kho xưởng 5.000m² — Đức Hoà</h3>
+          <div class="pcard-loc"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Tây Ninh</div>
+          <div class="pcard-specs">
+            <span class="spec-pill"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>5.000 m²</span>
+            <span class="spec-pill">Cao 9m</span>
+          </div>
+          <div class="pcard-foot">
+            <div class="price">299,39 triệu<small>/tháng</small></div>
+            <span class="call"><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="chi-tiet.html" class="pcard">
+        <div class="pcard-media">
+          <span class="fav"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6z"/></svg></span>
+          <svg class="wm" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>
+          <span class="kcn-tag">Trong KCN Sóng Thần</span>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Kho xưởng cho thuê KCN Sóng Thần</h3>
+          <div class="pcard-loc"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Bình Dương</div>
+          <div class="pcard-specs">
+            <span class="spec-pill"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>2.000 m²</span>
+            <span class="spec-pill">3 pha</span>
+          </div>
+          <div class="pcard-foot">
+            <div class="price">45 triệu<small>/tháng</small></div>
+            <span class="call"><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="chi-tiet.html" class="pcard">
+        <div class="pcard-media">
+          <span class="ribbon vip">VIP</span>
+          <span class="fav"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6z"/></svg></span>
+          <svg class="wm" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>
+          <span class="kcn-tag">Trong KCN Đại Hiệp</span>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Bán đất công nghiệp KCN Đại Hiệp</h3>
+          <div class="pcard-loc"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Đà Nẵng</div>
+          <div class="pcard-specs">
+            <span class="spec-pill"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>8.000 m²</span>
+            <span class="spec-pill">Sổ đỏ</span>
+          </div>
+          <div class="pcard-foot">
+            <div class="price">560 triệu</div>
+            <span class="call"><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          </div>
+        </div>
+      </a>
+
+      <a href="chi-tiet.html" class="pcard">
+        <div class="pcard-media">
+          <span class="fav"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6z"/></svg></span>
+          <svg class="wm" viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg>
+          <span class="kcn-tag">Ngoài KCN</span>
+        </div>
+        <div class="pcard-body">
+          <h3 class="pcard-title">Nhà xưởng ngoài KCN, PCCC đầy đủ</h3>
+          <div class="pcard-loc"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Long An</div>
+          <div class="pcard-specs">
+            <span class="spec-pill"><svg class="ic" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>1.500 m²</span>
+            <span class="spec-pill">PCCC đạt chuẩn</span>
+          </div>
+          <div class="pcard-foot">
+            <div class="price">60 triệu<small>/tháng</small></div>
+            <span class="call"><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VÌ SAO CHỌN BDS24H ============ -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Vì sao chọn BDS24H</div>
+        <h2>Nền tảng chuyên biệt cho BĐS công nghiệp</h2>
+      </div>
+    </div>
+    <div class="grid g4">
+      <div class="trust-card">
+        <div class="icwrap"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Pháp lý rõ ràng</h3>
+        <p>Mỗi tin đăng được xác minh sổ đỏ / hợp đồng thuê trước khi hiển thị công khai.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icwrap"><svg class="ic" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Khảo sát trực tiếp</h3>
+        <p>Đội ngũ khảo sát thực địa hỗ trợ đo đạc, chụp ảnh và xác thực hiện trạng.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icwrap"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Hỗ trợ 24/7</h3>
+        <p>Tổng đài và tư vấn viên hỗ trợ liên tục, phản hồi yêu cầu trong ngày.</p>
+      </div>
+      <div class="trust-card">
+        <div class="icwrap"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M2 21v-1a6 6 0 0 1 12 0v1"/><circle cx="17" cy="8" r="2.5"/><path d="M15.5 21v-1a5 5 0 0 1 6-4.9"/></svg></div>
+        <h3>Mạng lưới môi giới toàn quốc</h3>
+        <p>500+ môi giới hoạt động theo địa bàn, sẵn sàng tư vấn tận nơi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUY TRÌNH ============ -->
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Quy trình</div>
+        <h2>Chuỗi dịch vụ cung ứng</h2>
+      </div>
+    </div>
+    <div class="process">
+      <div class="pstep"><div class="num">01</div><h4>Tiếp nhận nhu cầu</h4><p>Ghi nhận nhu cầu thuê / mua, khu vực, ngân sách mong muốn.</p></div>
+      <div class="pstep"><div class="num">02</div><h4>Tư vấn pháp lý</h4><p>Hỗ trợ tư vấn pháp lý đầu tư trước khi ký kết.</p></div>
+      <div class="pstep"><div class="num">03</div><h4>Ký gửi &amp; môi giới</h4><p>Kết nối với môi giới phụ trách khu vực phù hợp.</p></div>
+      <div class="pstep"><div class="num">04</div><h4>Thông tin KCN</h4><p>Cập nhật quy hoạch, hạ tầng khu / cụm công nghiệp liên quan.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KCN NỔI BẬT ============ -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Khu công nghiệp</div>
+        <h2>Khu công nghiệp nổi bật</h2>
+      </div>
+      <a href="khu-cong-nghiep.html" class="link">Xem tất cả KCN →</a>
+    </div>
+    <div class="grid g3">
+      <div class="kcn-card">
+        <div class="kcn-media"><span class="badge-live"><span class="dot"></span>Đang mở bán</span><svg class="wm" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg></div>
+        <div class="kcn-body">
+          <h3>KCN Sóng Thần 1</h3>
+          <div class="loc"><svg class="ic sm" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Dĩ An, Bình Dương</div>
+          <div class="kcn-meta"><span>Tổng DT <b>178 ha</b></span><span>Tỷ lệ lấp đầy <b>96%</b></span></div>
+        </div>
+      </div>
+      <div class="kcn-card">
+        <div class="kcn-media"><span class="badge-live"><span class="dot"></span>Đang mở bán</span><svg class="wm" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg></div>
+        <div class="kcn-body">
+          <h3>KCN Đại Hiệp</h3>
+          <div class="loc"><svg class="ic sm" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Đại Lộc, Đà Nẵng</div>
+          <div class="kcn-meta"><span>Tổng DT <b>92 ha</b></span><span>Tỷ lệ lấp đầy <b>72%</b></span></div>
+        </div>
+      </div>
+      <div class="kcn-card">
+        <div class="kcn-media"><span class="badge-live"><span class="dot"></span>Đang mở bán</span><svg class="wm" viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M4 11h16M9 21v-6h6v6"/></svg></div>
+        <div class="kcn-body">
+          <h3>KCN Hải Sơn</h3>
+          <div class="loc"><svg class="ic sm" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Đức Hoà, Tây Ninh</div>
+          <div class="kcn-meta"><span>Tổng DT <b>135 ha</b></span><span>Tỷ lệ lấp đầy <b>88%</b></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIN TỨC ============ -->
+<section class="section alt" id="news">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Tin tức &amp; tri thức</div>
+        <h2>Cập nhật thị trường BĐS công nghiệp</h2>
+      </div>
+      <a href="tin-tuc.html" class="link">Xem tất cả bài viết →</a>
+    </div>
+    <div class="grid g3">
+      <a href="tin-tuc.html" class="news-card">
+        <div class="news-media"><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg></div>
+        <div class="news-body">
+          <span class="news-tag">Pháp luật đầu tư</span>
+          <h3>Nhà xưởng cho thuê KCN Quảng Trị — thực trạng &amp; giải pháp</h3>
+          <div class="news-date">31/07/2026</div>
+        </div>
+      </a>
+      <a href="tin-tuc.html" class="news-card">
+        <div class="news-media"><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg></div>
+        <div class="news-body">
+          <span class="news-tag">BĐS công nghiệp</span>
+          <h3>Thuê kho xưởng Quảng Trị — cần lưu ý gì trước khi ký hợp đồng?</h3>
+          <div class="news-date">30/07/2026</div>
+        </div>
+      </a>
+      <a href="tin-tuc.html" class="news-card">
+        <div class="news-media"><svg class="ic lg" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg></div>
+        <div class="news-body">
+          <span class="news-tag">Tin vĩ mô 24h</span>
+          <h3>Mua bán nhà xưởng Quảng Trị — kênh nào uy tín?</h3>
+          <div class="news-date">28/07/2026</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ĐĂNG TIN ============ -->
+<section class="section tight" id="packages">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <h2>Bạn có kho xưởng hoặc đất công nghiệp cần đăng?</h2>
+        <p>Đăng tin miễn phí trong hôm nay — tiếp cận hàng nghìn khách hàng &amp; môi giới đang tìm kiếm trên toàn quốc.</p>
+      </div>
+      <div class="actions">
+        <a href="dang-tin.html" class="btn">Đăng tin ngay</a>
+        <a href="goi-tin.html" class="btn on-dark">Xem bảng giá gói tin</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-top container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand"><span class="mark">24H</span>BDS<span>24H</span></a>
+        <p class="footer-desc">Sàn bất động sản công nghiệp toàn quốc — kết nối chủ tài sản, nhà môi giới và khách hàng có nhu cầu mua bán, cho thuê kho xưởng, đất công nghiệp.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><svg class="ic sm" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="#" aria-label="Zalo"><svg class="ic sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></a>
+          <a href="#" aria-label="Youtube"><svg class="ic sm" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Danh mục</h4>
+        <ul>
+          <li><a href="danh-sach.html">Kho xưởng cho thuê</a></li>
+          <li><a href="danh-sach.html">Kho xưởng bán</a></li>
+          <li><a href="danh-sach.html">Đất công nghiệp</a></li>
+          <li><a href="khu-cong-nghiep.html">Khu công nghiệp</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dành cho môi giới</h4>
+        <ul>
+          <li><a href="dang-tin.html">Đăng tin</a></li>
+          <li><a href="goi-tin.html">Bảng giá gói tin</a></li>
+          <li><a href="moi-gioi.html">Đăng ký môi giới</a></li>
+          <li><a href="gian-hang.html">Mở gian hàng</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ trợ</h4>
+        <ul>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+          <li><a href="#">Chính sách bảo mật</a></li>
+          <li><a href="#">Điều khoản sử dụng</a></li>
+          <li><a href="#">Liên hệ quảng cáo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên hệ</h4>
+        <ul class="footer-contact">
+          <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>0901 626 248</li>
+          <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>lienhe@bds24h.vn</li>
+          <li><svg class="ic sm" viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Tầng 8, Toà nhà ABC, Q.1, TP.HCM</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <span>© 2026 BDS24H. Bản nháp thiết kế — dùng nội bộ.</span>
+    <div class="legal"><a href="#">Điều khoản</a><a href="#">Bảo mật</a><a href="#">Sitemap</a></div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
